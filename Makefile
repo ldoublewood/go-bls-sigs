@@ -7,7 +7,7 @@ all: $(DEPS)
 $(DEPS): .install-bls  ;
 
 .install-bls: bls-signatures
-	./install-bls-signatures
+	./install-bls-signatures build
 	@touch $@
 
 
