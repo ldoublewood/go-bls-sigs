@@ -9,16 +9,18 @@ subm_dir="bls-signatures"
 
 git submodule update --init --recursive $subm_dir
 
-if download_release_tarball tarball_path "${subm_dir}"; then
+download() {
     tmp_dir=$(mktemp -d)
     tar -C "$tmp_dir" -xzf "$tarball_path"
 
     cp "${tmp_dir}/include/libbls_signatures.h" .
     cp "${tmp_dir}/lib/libbls_signatures.a" .
     cp "${tmp_dir}/lib/pkgconfig/libbls_signatures.pc" .
-else
-    (>&2 echo "failed to find or obtain precompiled assets for ${subm_dir}, falling back to local build")
-    build_from_source "${subm_dir}"
+
+}
+
+build() {
+        build_from_source "${subm_dir}"
 
     find "${subm_dir}/target/release" -type f -name libbls_signatures.h -exec cp -- "{}" . \;
     find "${subm_dir}/target/release" -type f -name libbls_signatures_ffi.a -exec cp -- "{}" libbls_signatures.a \;
@@ -38,4 +40,21 @@ else
         (>&2 echo "failed to install libbls_signatures.pc")
         exit 1
     fi
+
+}
+
+
+if [ $# = 0 ]; then
+    if download_release_tarball tarball_path "${subm_dir}"; then
+	download
+    else
+	(>&2 echo "failed to find or obtain precompiled assets for ${subm_dir}, falling back to local build")
+    fi
+elif [ $1 == "build" ]; then
+    build
+elif [ $1 == "download" ]; then
+    download
+else
+    (>&2 echo "usage $0 [build|download]")
+    exit 1
 fi
