@@ -5,7 +5,7 @@ set -Eeo pipefail
 # shellcheck source=install-shared.bash
 source "$(dirname "${BASH_SOURCE[0]}")/install-shared.bash"
 
-#subm_dir="bls-signatures"
+subm_dir="bls-signatures"
 
 #git submodule update --init --recursive $subm_dir
 
@@ -20,7 +20,7 @@ download() {
 }
 
 build() {
-        build_from_source "${subm_dir}"
+    build_from_source "${subm_dir}"
 
     find "${subm_dir}/target/release" -type f -name libbls_signatures.h -exec cp -- "{}" . \;
     find "${subm_dir}/target/release" -type f -name libbls_signatures_ffi.a -exec cp -- "{}" libbls_signatures.a \;
