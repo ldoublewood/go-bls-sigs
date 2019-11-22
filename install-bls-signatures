@@ -5,9 +5,9 @@ set -Eeo pipefail
 # shellcheck source=install-shared.bash
 source "$(dirname "${BASH_SOURCE[0]}")/install-shared.bash"
 
-subm_dir="bls-signatures"
+#subm_dir="bls-signatures"
 
-git submodule update --init --recursive $subm_dir
+#git submodule update --init --recursive $subm_dir
 
 download() {
     tmp_dir=$(mktemp -d)
